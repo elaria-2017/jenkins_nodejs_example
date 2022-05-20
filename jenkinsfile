@@ -20,7 +20,7 @@ pipeline {
 
                 git 'https://github.com/elaria-2017/jenkins_nodejs_example.git'
                 sh "docker login -u ${Docker_username} -p ${Docker_pass}"
-                sh "docker run -p 3000:3000 -d --env-file env.list nodejs "
+                sh "docker run -p 3000:3000 -d --env-file env.list elaria/nodejs-elaria "
             }
             }
         }
