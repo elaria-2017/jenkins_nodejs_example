@@ -1,0 +1,31 @@
+pipeline {
+    agent {label 'ec2-private'}
+
+    stages {
+        stage('ci') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'Docker_pass', usernameVariable: 'Docker_username')]) {
+                git 'https://github.com/elaria-2017/jenkins_nodejs_example.git'
+                sh "docker build -t elaria/nodejs-elaria ."
+                sh "docker login -u ${Docker_username} -p ${Docker_pass}"
+                sh "docker push elaria/nodejs-elaria"
+            }
+            }
+        }
+        
+        
+                stage('cd') {
+            steps {
+                                   withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'Docker_pass', usernameVariable: 'Docker_username')]) {
+
+                git 'https://github.com/elaria-2017/jenkins_nodejs_example.git'
+                sh "docker login -u ${Docker_username} -p ${Docker_pass}"
+                sh "docker run -p 3000:3000 -d nodejs"
+            }
+            }
+        }
+        
+        
+            
+        }
+    }
