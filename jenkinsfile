@@ -5,7 +5,6 @@ pipeline {
         stage('ci') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'Docker_pass', usernameVariable: 'Docker_username')]) {
-                git 'https://github.com/elaria-2017/jenkins_nodejs_example.git'
                 sh "docker build -t elaria/nodejs-elaria ."
                 sh "docker login -u ${Docker_username} -p ${Docker_pass}"
                 sh "docker push elaria/nodejs-elaria"
@@ -18,7 +17,6 @@ pipeline {
             steps {
                                    withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'Docker_pass', usernameVariable: 'Docker_username')]) {
 
-                git 'https://github.com/elaria-2017/jenkins_nodejs_example.git'
                 sh "docker login -u ${Docker_username} -p ${Docker_pass}"
                 sh "docker run --env-file env.list -p 3000:3000 -d  elaria/nodejs-elaria "
             }
